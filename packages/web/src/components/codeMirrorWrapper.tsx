@@ -26,7 +26,7 @@ export type SourceHighlight = {
   message?: string;
 };
 
-export type Language = 'javascript' | 'python' | 'java' | 'csharp' | 'jsonl';
+export type Language = 'javascript' | 'python' | 'java' | 'csharp' | 'jsonl' | 'yaml';
 
 export interface SourceProps {
   text: string;
@@ -73,6 +73,8 @@ export const CodeMirrorWrapper: React.FC<SourceProps> = ({
         mode = 'text/x-java';
       if (language === 'csharp')
         mode = 'text/x-csharp';
+      if (language === 'yaml')
+        mode = 'text/x-yaml';
 
       if (codemirrorRef.current
         && mode === codemirrorRef.current.cm.getOption('mode')

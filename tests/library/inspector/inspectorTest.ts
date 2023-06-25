@@ -32,6 +32,7 @@ type CLITestArgs = {
 };
 
 const codegenLang2Id: Map<string, string> = new Map([
+  ['Remodel Lang', 'yaml'],
   ['JSON', 'jsonl'],
   ['JavaScript', 'javascript'],
   ['Java', 'java'],

@@ -17,25 +17,26 @@
 import { asLocator } from '../../utils/isomorphic/locatorGenerators';
 import type { ActionInContext } from './codeGenerator';
 import type { Language, LanguageGenerator, LanguageGeneratorOptions } from './language';
+import YAML from 'yaml';
 
-export class JsonlLanguageGenerator implements LanguageGenerator {
-  id = 'jsonl';
+export class RemodelLanguageGenerator implements LanguageGenerator {
+  id = 'remodel-lang';
   groupName = 'Misc';
-  name = 'JSONL';
-  highlighter = 'javascript' as Language;
+  name = 'Remodel Lang';
+  highlighter = 'yaml' as Language;
 
   generateAction(actionInContext: ActionInContext): string {
-    const locator = (actionInContext.action as any).selector ? JSON.parse(asLocator('jsonl', (actionInContext.action as any).selector)) : undefined;
+    const locator = (actionInContext.action as any).selector ? JSON.parse(asLocator('yaml', (actionInContext.action as any).selector)) : undefined;
     const entry = {
       ...actionInContext.action,
       pageAlias: actionInContext.frame.pageAlias,
       locator,
     };
-    return JSON.stringify(entry);
+    return YAML.stringify(entry);
   }
 
   generateHeader(options: LanguageGeneratorOptions): string {
-    return JSON.stringify(options);
+    return YAML.stringify(options);
   }
 
   generateFooter(saveStorage: string | undefined): string {

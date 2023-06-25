@@ -25,6 +25,7 @@ import { Frame } from './frames';
 import { BrowserContext } from './browserContext';
 import { JavaLanguageGenerator } from './recorder/java';
 import { JavaScriptLanguageGenerator } from './recorder/javascript';
+import { RemodelLanguageGenerator } from './recorder/remodel-lang';
 import { JsonlLanguageGenerator } from './recorder/jsonl';
 import { CSharpLanguageGenerator } from './recorder/csharp';
 import { PythonLanguageGenerator } from './recorder/python';
@@ -408,6 +409,7 @@ class ContextRecorder extends EventEmitter {
       new CSharpLanguageGenerator('nunit'),
       new CSharpLanguageGenerator('library'),
       new JsonlLanguageGenerator(),
+      new RemodelLanguageGenerator(),
     ]);
     const primaryLanguage = [...languages].find(l => l.id === codegenId);
     if (!primaryLanguage)
@@ -675,6 +677,8 @@ function languageForFile(file: string) {
     return 'java';
   if (file.endsWith('.cs'))
     return 'csharp';
+  if (file.endsWith('.yaml') || file.endsWith('.yml'))
+    return 'yaml';
   return 'javascript';
 }
 

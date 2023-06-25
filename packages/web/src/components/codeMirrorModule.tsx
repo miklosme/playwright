@@ -19,6 +19,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/clike/clike';
+import 'codemirror/mode/yaml/yaml';
 
 export type CodeMirror = typeof codemirror;
 export default codemirror;

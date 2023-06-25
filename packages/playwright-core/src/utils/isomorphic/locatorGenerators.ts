@@ -18,7 +18,7 @@ import { escapeWithQuotes, toSnakeCase, toTitleCase } from './stringUtils';
 import { type NestedSelectorBody, parseAttributeSelector, parseSelector, stringifySelector } from './selectorParser';
 import type { ParsedSelector } from './selectorParser';
 
-export type Language = 'javascript' | 'python' | 'java' | 'csharp' | 'jsonl';
+export type Language = 'javascript' | 'python' | 'java' | 'csharp' | 'jsonl' | 'yaml';
 export type LocatorType = 'default' | 'role' | 'text' | 'label' | 'placeholder' | 'alt' | 'title' | 'test-id' | 'nth' | 'first' | 'last' | 'has-text' | 'has-not-text' | 'has' | 'hasNot' | 'frame' | 'and' | 'or';
 export type LocatorBase = 'page' | 'locator' | 'frame-locator';
 
@@ -641,12 +641,30 @@ export class JsonlLocatorFactory implements LocatorFactory {
   }
 }
 
+export class YamlLocatorFactory implements LocatorFactory {
+  generateLocator(base: LocatorBase, kind: LocatorType, body: string | RegExp, options: LocatorOptions = {}): string {
+    return JSON.stringify({
+      kind,
+      body,
+      options,
+    });
+  }
+
+  chainLocators(locators: string[]): string {
+    const objects = locators.map(l => JSON.parse(l));
+    for (let i = 0; i < objects.length - 1; ++i)
+      objects[i].next = objects[i + 1];
+    return JSON.stringify(objects[0]);
+  }
+}
+
 const generators: Record<Language, LocatorFactory> = {
   javascript: new JavaScriptLocatorFactory(),
   python: new PythonLocatorFactory(),
   java: new JavaLocatorFactory(),
   csharp: new CSharpLocatorFactory(),
   jsonl: new JsonlLocatorFactory(),
+  yaml: new YamlLocatorFactory(),
 };
 
 function isRegExp(obj: any): obj is RegExp {
